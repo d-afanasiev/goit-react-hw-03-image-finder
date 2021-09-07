@@ -1,4 +1,5 @@
 import { Component } from "react";
+import axios from "axios";
 import css from "./Searchbar.module.css";
 
 class Searchbar extends Component {
@@ -15,16 +16,7 @@ class Searchbar extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const API = `https://pixabay.com/api/?q=${this.state.image}&page=1&key=23262406-c7298f4dbbc93d98b496e6608&image_type=photo&orientation=horizontal&per_page=12`;
-    const result = fetch(API)
-      .then((images) => images.json())
-      .then((data) => data.hits);
-    console.log(JSON.parse(result));
-    // const totalState = {
-    //   name: this.state.name,
-    //   number: this.state.number,
-    // };
-
-    // this.props.formSubmitHandler(totalState);
+    axios.get(API).then((images) => this.props.onSubmit(images.data.hits));
   };
 
   render() {
