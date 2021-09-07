@@ -9,6 +9,7 @@ import Searchbar from "./components/Searchbar/Searchbar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import ImageGalleryItem from "./components/ImageGalleryItem/ImageGalleryItem";
 import Button from "./components/Button/Button";
+import Modal from "./components/Modal/Modal";
 
 class App extends Component {
   state = {
@@ -17,6 +18,7 @@ class App extends Component {
     page: null,
     showLoader: false,
     hits: 0,
+    showModal: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -81,7 +83,7 @@ class App extends Component {
   };
 
   render() {
-    const { images, page, hits } = this.state;
+    const { images, page, hits, showModal } = this.state;
 
     return (
       <div className="App">
@@ -100,6 +102,7 @@ class App extends Component {
           />
         )}
         <Button imageGallery={hits} onSubmit={this.getImages} page={page} />
+        {showModal && <Modal src={images} />}
       </div>
     );
   }
