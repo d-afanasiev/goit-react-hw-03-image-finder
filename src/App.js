@@ -2,7 +2,9 @@ import { Component } from "react";
 import "./App.css";
 import axios from "axios";
 import { Notify } from "notiflix";
+import Loader from "react-loader-spinner";
 
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Searchbar from "./components/Searchbar/Searchbar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import ImageGalleryItem from "./components/ImageGalleryItem/ImageGalleryItem";
@@ -13,6 +15,7 @@ class App extends Component {
     images: [],
     name: "",
     page: null,
+    showLoader: false,
     hits: 0,
   };
 
@@ -21,6 +24,7 @@ class App extends Component {
       this.state.name !== prevState.name ||
       this.state.page !== prevState.page
     ) {
+      this.loaderToggle(true);
       const API = `https://pixabay.com/api/?q=${this.state.name}&page=${this.state.page}&key=23262406-c7298f4dbbc93d98b496e6608&image_type=photo&orientation=horizontal&per_page=12`;
       axios
         .get(API)
@@ -44,6 +48,7 @@ class App extends Component {
           if (this.state.hits >= images.data.totalHits) {
             this.setState({ hits: 0 });
           }
+          this.loaderToggle(false);
         })
         .catch((error) => {
           Notify.failure(
@@ -65,9 +70,14 @@ class App extends Component {
           page: data.page,
           hits: 0,
         })
-      : this.setState({ page: data.page });
+      : this.setState({ page: data.page, hits: 0 });
     // console.log(data);
     // console.log(this.state.images);
+  };
+
+  loaderToggle = (status) => {
+    console.log(status);
+    return this.setState({ showLoader: status });
   };
 
   render() {
@@ -79,6 +89,16 @@ class App extends Component {
         <ImageGallery>
           <ImageGalleryItem imageGallery={images} />
         </ImageGallery>
+        {this.state.showLoader && (
+          <Loader
+            type="Audio"
+            color="#00BFFF"
+            height={80}
+            width={80}
+            timeout="500"
+            className="Loader"
+          />
+        )}
         <Button imageGallery={hits} onSubmit={this.getImages} page={page} />
       </div>
     );
