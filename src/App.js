@@ -29,8 +29,8 @@ class App extends Component {
       axios
         .get(API)
         .then((images) => {
-          console.log(images);
-          console.log(this.state);
+          // console.log(images);
+          // console.log(this.state);
 
           if (images.data.hits.length === 0) {
             Notify.failure(
@@ -76,7 +76,7 @@ class App extends Component {
   };
 
   loaderToggle = (status) => {
-    console.log(status);
+    // console.log(status);
     return this.setState({ showLoader: status });
   };
 
@@ -95,7 +95,7 @@ class App extends Component {
             color="#00BFFF"
             height={80}
             width={80}
-            timeout="500"
+            timeout={500}
             className="Loader"
           />
         )}

@@ -9,7 +9,7 @@ class Button extends Component {
 
   render() {
     const { imageGallery } = this.props;
-    console.log(imageGallery);
+    // console.log(imageGallery);
 
     return (
       imageGallery !== 0 && (
