@@ -52,6 +52,10 @@ class App extends Component {
             this.setState({ hits: 0 });
           }
           this.loaderToggle(false);
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth",
+          });
         })
         .catch((error) => {
           Notify.failure(
@@ -59,10 +63,6 @@ class App extends Component {
           );
         });
     }
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth",
-    });
   }
 
   getImages = (data) => {
@@ -122,7 +122,6 @@ class App extends Component {
         {showModal && (
           <Modal
             modalSrc={modalSrc}
-            loaderToggle={this.loaderToggle}
             showLoader={showModal}
             toogleModal={this.toogleModal}
           />

@@ -3,7 +3,6 @@ import css from "./Modal.module.css";
 
 class Modal extends Component {
   componentDidMount() {
-    this.props.loaderToggle(true);
     window.addEventListener("keydown", this.handleKeyDown);
   }
 
