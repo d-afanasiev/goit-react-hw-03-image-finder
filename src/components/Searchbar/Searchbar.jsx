@@ -16,7 +16,7 @@ class Searchbar extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    this.props.onSubmit({ image: this.state.image, page: 1 });
+    this.props.onSubmit({ image: this.state.image, page: 1, hits: 0 });
   };
 
   render() {

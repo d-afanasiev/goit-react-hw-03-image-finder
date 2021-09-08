@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import css from "./ImageGalleryItem.module.css";
 
 class ImageGalleryItem extends Component {
-  getSrc = (e) => {
+  writeSrcState = (e) => {
     this.props.writeSrcState(e.target.dataset.src);
     this.props.toogleModal(true);
   };
@@ -20,7 +20,7 @@ class ImageGalleryItem extends Component {
             alt={image.tags}
             data-src={image.largeImageURL}
             className={css.ImageGalleryItemImage}
-            onClick={this.getSrc}
+            onClick={this.writeSrcState}
           />
         </li>
       ))

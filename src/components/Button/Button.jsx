@@ -5,7 +5,7 @@ import css from "./Button.module.css";
 class Button extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.onSubmit({ page: this.props.currentPage + 1 });
+    this.props.onSubmit({ page: this.props.currentPage + 1, hits: 0 });
   };
 
   render() {

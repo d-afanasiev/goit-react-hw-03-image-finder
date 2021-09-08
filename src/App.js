@@ -27,53 +27,62 @@ class App extends Component {
       this.state.name !== prevState.name ||
       this.state.page !== prevState.page
     ) {
-      this.loaderToggle(true);
-      const API = `https://pixabay.com/api/?q=${this.state.name}&page=${this.state.page}&key=23262406-c7298f4dbbc93d98b496e6608&image_type=photo&orientation=horizontal&per_page=12`;
-      axios
-        .get(API)
-        .then((images) => {
-          if (images.data.hits.length === 0) {
-            Notify.failure(
-              "Sorry, there are no images matching your search query. Please try again."
-            );
-          }
-
-          this.setState((prevState) => {
-            return {
-              images: [...prevState.images, ...images.data.hits],
-              hits: prevState.hits + images.data.hits.length,
-            };
-          });
-
-          if (this.state.hits >= images.data.totalHits) {
-            this.setState({ hits: 0 });
-          }
-          this.loaderToggle(false);
-          window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: "smooth",
-          });
-        })
-        .catch((error) => {
-          Notify.failure(
-            "Sorry, there are no images matching your search query. Please try again."
-          );
-        });
+      this.toogleLoader(true);
+      this.dataRequestAPI();
     }
   }
 
-  getImages = (data) => {
+  dataRequestAPI = () => {
+    const API_KEY = "23262406-c7298f4dbbc93d98b496e6608";
+    const API = `https://pixabay.com/api/?q=${this.state.name}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
+    axios
+      .get(API)
+      .then((images) => {
+        if (images.data.hits.length === 0) {
+          Notify.failure(
+            "Sorry, there are no images matching your search query. Please try again."
+          );
+        }
+
+        this.setState((prevState) => {
+          return {
+            images: [...prevState.images, ...images.data.hits],
+            hits: prevState.hits + images.data.hits.length,
+          };
+        });
+
+        if (this.state.hits >= images.data.totalHits) {
+          this.setState({ hits: 0 });
+        }
+        this.toogleLoader(false);
+        this.scrollToBottom();
+      })
+      .catch((error) => {
+        Notify.failure(
+          "Sorry, there are no images matching your search query. Please try again."
+        );
+      });
+  };
+
+  scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
+  writeValuesToState = (data) => {
     data.image
       ? this.setState({
           images: [],
           name: data.image,
           page: data.page,
-          hits: 0,
+          hits: data.hits,
         })
-      : this.setState({ page: data.page, hits: 0 });
+      : this.setState({ page: data.page, hits: data.hits });
   };
 
-  loaderToggle = (status) => {
+  toogleLoader = (status) => {
     return this.setState({ showLoader: status });
   };
 
@@ -94,7 +103,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Searchbar onSubmit={this.getImages} />
+        <Searchbar onSubmit={this.writeValuesToState} />
         <ImageGallery>
           <ImageGalleryItem
             imageGallery={images}
@@ -112,7 +121,11 @@ class App extends Component {
             className="Loader"
           />
         )}
-        <Button totalHits={hits} onSubmit={this.getImages} currentPage={page} />
+        <Button
+          totalHits={hits}
+          onSubmit={this.writeValuesToState}
+          currentPage={page}
+        />
         {showModal && (
           <Modal
             modalSrc={modalSrc}
