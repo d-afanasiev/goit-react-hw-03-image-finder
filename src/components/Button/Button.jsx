@@ -1,18 +1,18 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 import css from "./Button.module.css";
 
 class Button extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.onSubmit({ page: this.props.page + 1 });
+    this.props.onSubmit({ page: this.props.currentPage + 1 });
   };
 
   render() {
-    const { imageGallery } = this.props;
-    // console.log(imageGallery);
+    const { totalHits } = this.props;
 
     return (
-      imageGallery !== 0 && (
+      totalHits !== 0 && (
         <button
           type="submit"
           className={css.Button}
@@ -24,5 +24,11 @@ class Button extends Component {
     );
   }
 }
+
+Button.propTypes = {
+  totalHits: PropTypes.number,
+  onSubmit: PropTypes.func,
+  currentPage: PropTypes.number,
+};
 
 export default Button;

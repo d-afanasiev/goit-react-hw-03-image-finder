@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 import css from "./Modal.module.css";
 
 class Modal extends Component {
@@ -17,22 +18,28 @@ class Modal extends Component {
   };
 
   handleBackdropClick = (e) => {
-    // console.log(e.target === e.currentTarget);
     if (e.target === e.currentTarget) {
       this.props.toogleModal(false);
     }
   };
 
   render() {
-    // console.log(this.props.modalSrc);
+    const { modalSrc } = this.props;
+
     return (
       <div className={css.Overlay} onClick={this.handleBackdropClick}>
         <div className={css.Modal}>
-          <img src={this.props.modalSrc} alt="" />
+          <img src={modalSrc} alt="" />
         </div>
       </div>
     );
   }
 }
+
+Modal.propTypes = {
+  modalSrc: PropTypes.string,
+  showLoader: PropTypes.bool,
+  toogleModal: PropTypes.func,
+};
 
 export default Modal;

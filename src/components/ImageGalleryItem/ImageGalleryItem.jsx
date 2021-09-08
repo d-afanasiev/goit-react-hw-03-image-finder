@@ -1,17 +1,16 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 import css from "./ImageGalleryItem.module.css";
 
 class ImageGalleryItem extends Component {
   getSrc = (e) => {
-    // console.log(e.target.dataset.src);
-    // console.log(this.props.writeSrcState);
     this.props.writeSrcState(e.target.dataset.src);
     this.props.toogleModal(true);
   };
 
   render() {
     const { imageGallery } = this.props;
-    // console.log(imageGallery);
+
     return (
       imageGallery.length !== 0 &&
       imageGallery.map((image) => (
@@ -28,5 +27,11 @@ class ImageGalleryItem extends Component {
     );
   }
 }
+
+ImageGalleryItem.propTypes = {
+  imageGallery: PropTypes.arrayOf(PropTypes.object),
+  toogleModal: PropTypes.func,
+  writeSrcState: PropTypes.func,
+};
 
 export default ImageGalleryItem;
