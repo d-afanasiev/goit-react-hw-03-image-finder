@@ -27,7 +27,6 @@ class App extends Component {
       this.state.name !== prevState.name ||
       this.state.page !== prevState.page
     ) {
-      this.toogleLoader(true);
       this.dataRequestAPI();
     }
   }
@@ -35,6 +34,7 @@ class App extends Component {
   dataRequestAPI = () => {
     const API_KEY = "23262406-c7298f4dbbc93d98b496e6608";
     const API = `https://pixabay.com/api/?q=${this.state.name}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
+    this.toogleLoader(true);
     axios
       .get(API)
       .then((images) => {
@@ -54,14 +54,14 @@ class App extends Component {
         if (this.state.hits >= images.data.totalHits) {
           this.setState({ hits: 0 });
         }
-        this.toogleLoader(false);
         this.scrollToBottom();
       })
       .catch((error) => {
         Notify.failure(
           "Sorry, there are no images matching your search query. Please try again."
         );
-      });
+      })
+      .finally(() => this.toogleLoader(false));
   };
 
   scrollToBottom = () => {

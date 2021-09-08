@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { Notify } from "notiflix";
 import PropTypes from "prop-types";
 import css from "./Searchbar.module.css";
 
@@ -16,7 +17,9 @@ class Searchbar extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    this.props.onSubmit({ image: this.state.image, page: 1, hits: 0 });
+    this.state.image.trim() === ""
+      ? Notify.warning("Search field is empty.")
+      : this.props.onSubmit({ image: this.state.image, page: 1, hits: 0 });
   };
 
   render() {
