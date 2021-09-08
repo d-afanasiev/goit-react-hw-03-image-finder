@@ -19,6 +19,7 @@ class App extends Component {
     showLoader: false,
     hits: 0,
     showModal: false,
+    modalSrc: "",
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -82,14 +83,30 @@ class App extends Component {
     return this.setState({ showLoader: status });
   };
 
+  toogleModal = (data) => {
+    this.setState({
+      showModal: data,
+    });
+  };
+
+  writeSrcState = (data) => {
+    this.setState({
+      modalSrc: data,
+    });
+  };
+
   render() {
-    const { images, page, hits, showModal } = this.state;
+    const { images, page, hits, showModal, modalSrc } = this.state;
 
     return (
       <div className="App">
         <Searchbar onSubmit={this.getImages} />
         <ImageGallery>
-          <ImageGalleryItem imageGallery={images} />
+          <ImageGalleryItem
+            imageGallery={images}
+            toogleModal={this.toogleModal}
+            writeSrcState={this.writeSrcState}
+          />
         </ImageGallery>
         {this.state.showLoader && (
           <Loader
@@ -102,7 +119,14 @@ class App extends Component {
           />
         )}
         <Button imageGallery={hits} onSubmit={this.getImages} page={page} />
-        {showModal && <Modal src={images} />}
+        {showModal && (
+          <Modal
+            modalSrc={modalSrc}
+            loaderToggle={this.loaderToggle}
+            showLoader={showModal}
+            toogleModal={this.toogleModal}
+          />
+        )}
       </div>
     );
   }
