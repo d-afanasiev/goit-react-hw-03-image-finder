@@ -1,10 +1,10 @@
 import { Component } from "react";
-import axios from "axios";
 import { Notify } from "notiflix";
 import Loader from "react-loader-spinner";
 
 import "./App.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import fetchImages from "./services/pixabay-api";
 import Searchbar from "./components/Searchbar/Searchbar";
 import ImageGallery from "./components/ImageGallery";
 import ImageGalleryItem from "./components/ImageGalleryItem";
@@ -32,11 +32,9 @@ class App extends Component {
   }
 
   dataRequestAPI = () => {
-    const API_KEY = "23262406-c7298f4dbbc93d98b496e6608";
-    const API = `https://pixabay.com/api/?q=${this.state.name}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
+    const { name, page } = this.state;
     this.toogleLoader(true);
-    axios
-      .get(API)
+    fetchImages(name, page)
       .then((images) => {
         if (images.data.hits.length === 0) {
           Notify.failure(
